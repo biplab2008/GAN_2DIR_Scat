@@ -1,0 +1,27 @@
+# init
+# training with L1 with 1e-5
+
+# optimizer and loss function
+# A learning rate of 0.0002 works well on DCGAN
+
+def init_model(generator_arch=[6,64,1,1],#[num_residual_block,residual_channels,upscale_factor,num_upscale_layers]
+               lr = 0.00001, 
+               beta_1 = 0.9, 
+               beta_2 = 0.999, 
+               device='cuda'):
+    
+    gen = Generator(num_residual_block=generator_arch[0],
+                    residual_channels=generator_arch[1],
+                    upscale_factor=generator_arch[2],
+                    num_upscale_layers=generator_arch[3]).to(device)
+    
+    gen_opt = torch.optim.Adam(gen.parameters(), lr=lr, betas=(beta_1, beta_2))
+    dis = Discriminator().to(device) 
+    dis_opt = torch.optim.Adam(dis.parameters(), lr=lr, betas=(beta_1, beta_2))
+
+    gen = gen.apply(weights_init)
+    dis = dis.apply(weights_init)
+    
+    book_keeping={'device':device,'lr':lr,'gen_arch':generator_archt,'betas':[beta_1,beta_2]}
+    
+    return (gen,dis,gen_opt,dis_opt,book_keeping)
