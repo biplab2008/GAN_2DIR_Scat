@@ -2,4 +2,4 @@
 # files included :
 1. Generator Models
 2. Data analysis
-3. Jupyter script
+3. Jupyter script for inferencing
